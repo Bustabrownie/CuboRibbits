@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// A script written by me.
+// I took aspects from Nyero's ground/wall functions.
+// This script acts as the basic AI for the first boss.
 public class EnemyPatrol : MonoBehaviour {
 
 	public float moveSpeed;
@@ -97,38 +100,46 @@ public class EnemyPatrol : MonoBehaviour {
 	private GroundState groundState;
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		groundState = new GroundState(transform.gameObject);
 	}
 	
 	// Update is called once per frame
-	void Update () {
-
+	void Update()
+	{
+		// Commented out code.  May use later?
 		//GetComponent<Rigidbody2D>().AddForce(new Vector2(((moveSpeed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), 0));
 
+		// If the player is to the right of the enemy, it will go right and vice versa.
 		if(player.transform.position.x > enemy.transform.position.x)
 		{
 			GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
+			
+			// Commented out code.  May use later?
 			//GetComponent<Rigidbody2D>().AddForce(new Vector2(((moveSpeed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), GetComponent<Rigidbody2D>().velocity.y));
-
 		}
 		else
 		{
 			GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
+			
+			// Commented out code.  May use later?
 			//GetComponent<Rigidbody2D>().AddForce(new Vector2(((moveSpeed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), GetComponent<Rigidbody2D>().velocity.y));
-
 		}
-
+		
+		// If the player is above the enemy, the enemy will jump.
 		if((player.transform.position.y > enemy.transform.position.y) && groundState.isGround())
 		{
 			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpSpeed);
 		}
-
+		
+		// If the enemy is touching the wall, it will do wall jumps.
 		if(groundState.isWall())
 		{
 			GetComponent<Rigidbody2D>().velocity = new Vector2(((-groundState.wallDirection() * moveSpeed * 2f) - GetComponent<Rigidbody2D>().velocity.x) * airAccel, jumpSpeed * 0.8f);
+			
+			// Commented out code.  May use later?
 			//GetComponent<Rigidbody2D>().AddForce(new Vector2(((-groundState.wallDirection() * moveSpeed * 2f) - GetComponent<Rigidbody2D>().velocity.x) * airAccel, jumpSpeed));
-
 		}
 	
 	}

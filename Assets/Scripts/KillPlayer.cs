@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class KillPlayer : MonoBehaviour {
+// A script written by gamesplusjames.
+// This script handles the player being killed.
+public class KillPlayer : MonoBehaviour
+{
 
 	public LevelManager levelManager;
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		levelManager = FindObjectOfType<LevelManager>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 	
 	}
 
@@ -19,7 +24,9 @@ public class KillPlayer : MonoBehaviour {
 	{
 		if(other.name == "Player")
 		{
-			Application.LoadLevel(Application.loadedLevel); 
+			Application.LoadLevel(Application.loadedLevel);
+			
+			// Commented out code.  May use later?
 			//levelManager.RespawnPlayer();
 		}
 	}

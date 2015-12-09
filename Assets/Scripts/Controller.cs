@@ -1,20 +1,18 @@
-﻿/********************************************************
- * 2D Meatboy style controller written entirely by Nyero.
- * 
+﻿using UnityEngine;
+using System.Collections;
+
+// A beautiful script written mostly by Nyero Faulitahs.
+// I have made some modifications:
+// Added the jumpLeeway function.
+// Added a variable jump height.
+// Changed constants for better feel and control.
+// Changed accel and airAccel values when touching ground/walls.
+// Here is a message from Nyero:
+/********************************************************
  * Thank you for using this script, it makes me feel all
  * warm and happy inside. ;)
  *                             -Nyero
- * 
- * ------------------------------------------------------
- * Notes on usage:
- *     Please don't use the meatboy image, as your some
- * might consider it stealing.  Simply replace the sprite
- * used, and you'll have a 2D platform controller that is
- * very similar to meatboy.
  ********************************************************/
-using UnityEngine;
-using System.Collections;
-
 public class Controller : MonoBehaviour
 {	
 	public class GroundState
@@ -99,10 +97,9 @@ public class Controller : MonoBehaviour
 		}
 	}
 	
-	// Tweak these values in the inspector to perfection.
 	public float    speed = 11.25f;			// Running speed.
-	public float    accel = 8.75f;			// How fast can you turn around on ground.
-	public float airAccel = 8.75f;				// How fast can you turn around in air.
+	public float    accel = 8.75f;			// Acceleration on the ground.
+	public float airAccel = 8.75f;			// How fast can you turn around in air.
 	public float jumpShortSpeed = 0f;		// Velocity for the lowest jump.
 	public float jumpSpeed = 13f;			// Velocity for the highest jump.
 
@@ -111,19 +108,17 @@ public class Controller : MonoBehaviour
 	bool jumpCancel = false;				// Jump is released.
 
 	private Vector2 input;					// Variable to help tell if button was pressed.
-	private GroundState groundState;
+	private GroundState groundState;		// Tell if the player is on the ground or wall.
 
-	public float jumpLeeway = 0.15f;
-	private float jumpTimer;
-	public AudioClip jumpSound;
+	public float jumpLeeway = 0.15f;		// The amount of time a player can still jump after falling.
+	private float jumpTimer;				// Makes the above possible.
 
-	private AudioSource jumpAudio;
-
-
-	private bool justLanded = false;
-
+	public AudioClip jumpSound;				// Makes the jump sound!
+	private AudioSource jumpAudio;			// Makes the above possible.
+	
 	void Awake()
 	{
+		// Initializes the audio.
 		jumpAudio = GetComponent<AudioSource>();
 	}
 
@@ -173,13 +168,13 @@ public class Controller : MonoBehaviour
 
 	void FixedUpdate()
 	{	
-		//Debug.Log (Time.time);
+		// jumpTimer only updates when the player is on the ground.
 		if(groundState.isGround())
 		{
 			jumpTimer = Time.time;
-			//Debug.Log ("Grounded is" + Time.time);
 		}
-
+		
+		// If the player falls off a platform, they still have a fraction of a second where a jump is still possible.
 		if(!groundState.isGround() && Input.GetKeyDown(KeyCode.Space) && ((Time.time - jumpTimer) < jumpLeeway))
 		{
 			input.y = 0;
@@ -188,6 +183,7 @@ public class Controller : MonoBehaviour
 			jump = false;
 			jumpTimer = 0f;
 		}
+
 		// Move player left or right.
 		GetComponent<Rigidbody2D>().AddForce(new Vector2(((input.x * speed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), 0));
 

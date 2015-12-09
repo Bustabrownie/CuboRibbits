@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LoopMusic : MonoBehaviour {
-
-	public GameObject music;
+// A script to make sure that the music
+// does not get destroyed when restarting
+// a level, and it does not duplicate.
+public class LoopMusic : MonoBehaviour
+{
 
 	private static LoopMusic instance = null;
 	public static LoopMusic Instance
@@ -13,11 +15,6 @@ public class LoopMusic : MonoBehaviour {
 
 	void Awake()
 	{
-		//if(this.gameObject != music)
-		//{
-		//	Destroy (this);
-		//}
-
 		if( instance != null && instance != this)
 		{
 			Destroy(this.gameObject);
@@ -28,34 +25,20 @@ public class LoopMusic : MonoBehaviour {
 			instance = this;
 		}
 		DontDestroyOnLoad(this.gameObject);
-
 	}
 
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		
 	}
-
-	//void Awake()
-	//{
-	//
-	//	if(Instance)
-	//	{
-	//		DestroyImmediate(music);
-	//	}
-	//	else
-	//	{
-	//		DontDestroyOnLoad(music);
-	//		instance = this;
-	//	}
-	//}
-
 
 
 }

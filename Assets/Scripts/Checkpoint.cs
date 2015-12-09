@@ -1,17 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Checkpoint : MonoBehaviour {
+// A script written by gamesplusjames.
+// This script handles the "checkpoints."
+public class Checkpoint : MonoBehaviour
+{
 
 	public LevelManager levelManager;
 	
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		levelManager = FindObjectOfType<LevelManager>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 		
 	}
 	

@@ -1,40 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelLoader : MonoBehaviour {
+// A script written by gamesplusjames.
+// This script handles the switching levels.
+public class LevelLoader : MonoBehaviour
+{
 
 	private bool playerInZone;
 
 	public string levelToLoad;
 
-	//public GameObject music;
-
-
-	GameObject[] music;
-
-	void DestroyMusic()
-	{
-		music = GameObject.FindGameObjectsWithTag ("Music");
-		
-		for(var i=0; i<music.Length; i++)
-		{
-			Destroy(music[i]);
-		}
-	}
-
-
 	// Use this for initialization
-	void Start ()
+	void Start()
 	{
 		playerInZone = false;
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	void Update()
 	{
+		// When the player is in the zone and
+		// press the up arrow key, the will
+		// be taken to a new level.
 		if(Input.GetKeyDown(KeyCode.UpArrow) && playerInZone)
 		{
-			DestroyMusic();
+			Destroy(GameObject.FindGameObjectWithTag("Music"));
 			Application.LoadLevel(levelToLoad);
 		}
 	}

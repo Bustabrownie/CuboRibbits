@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LevelManager : MonoBehaviour {
+// A script written by gamesplusjames.
+// This script handles the respawning.
+public class LevelManager : MonoBehaviour
+{
 
 	public GameObject currentCheckpoint;
 
@@ -10,15 +13,17 @@ public class LevelManager : MonoBehaviour {
 	public GameObject deathParticle;
 	public GameObject respawnParticle;
 
-	public float respawnDelay;
+	public float respawnDelay;		// The amount of time it takes to respawn.
 
 	// Use this for initialization
-	void Start () {
+	void Start()
+	{
 		player = FindObjectOfType<Controller>();
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update()
+	{
 	
 	}
 		
@@ -26,7 +31,9 @@ public class LevelManager : MonoBehaviour {
 	{
 		StartCoroutine("RespawnPlayerCo");
 	}
-
+	
+	// This function respawns the player.
+	// It also shows the death particles.
 	public IEnumerator RespawnPlayerCo()
 	{
 		Instantiate(deathParticle, player.transform.position, player.transform.rotation);
@@ -36,7 +43,8 @@ public class LevelManager : MonoBehaviour {
 		yield return new WaitForSeconds(respawnDelay);
 
 		Application.LoadLevel(Application.loadedLevel); 
-
+		
+		// Commented out code. May use later?
 		//player.transform.position = currentCheckpoint.transform.position;
 		//player.enabled = true;
 		//player.GetComponent<Renderer>().enabled = true;
