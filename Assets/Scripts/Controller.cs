@@ -8,11 +8,13 @@ using System.Collections;
 // Changed constants for better feel and control.
 // Changed accel and airAccel values when touching ground/walls.
 // Here is a message from Nyero:
+
 /********************************************************
  * Thank you for using this script, it makes me feel all
  * warm and happy inside. ;)
  *                             -Nyero
  ********************************************************/
+
 public class Controller : MonoBehaviour
 {	
 	public class GroundState

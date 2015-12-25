@@ -6,11 +6,6 @@ using System.Collections;
 // This script acts as the basic AI for the first boss.
 public class EnemyPatrol : MonoBehaviour {
 
-	public float moveSpeed;
-	public float jumpSpeed;
-	public float accel;
-	public float airAccel;
-
 	public GameObject enemy;
 	public GameObject player;
 	
@@ -26,7 +21,7 @@ public class EnemyPatrol : MonoBehaviour {
 		{
 			enemy = enemyRef;
 			width = enemy.GetComponent<Collider2D>().bounds.extents.x + 0.1f;
-			height = enemy.GetComponent<Collider2D>().bounds.extents.y + 0.2f;
+			height = enemy.GetComponent<Collider2D>().bounds.extents.y + 0.01f;
 			length = 0.05f;
 		}
 		
@@ -97,50 +92,151 @@ public class EnemyPatrol : MonoBehaviour {
 		}
 	}
 
-	private GroundState groundState;
+	public float    speed = 2.9f;			// Running speed.
+	public float    accel = 3000f;			// Acceleration on the ground.
+	public float airAccel = 3000f;				// How fast can you turn around in air.
+	public float jumpSpeed = 22f;			// Velocity for the highest jump.
 
-	// Use this for initialization
+	private GroundState groundState;
+	private Vector2 input;
+	bool jump = false;						// Jump is held.
+	bool jumpWall = false;					// Jump is held on wall.
+
+	private float startTime;
+
 	void Start()
 	{
+		startTime = Time.time;
 		groundState = new GroundState(transform.gameObject);
 	}
 	
-	// Update is called once per frame
 	void Update()
 	{
-		// Commented out code.  May use later?
-		//GetComponent<Rigidbody2D>().AddForce(new Vector2(((moveSpeed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), 0));
+		if ((Time.time - startTime) > 20f)
+		{
+			speed = 3.9f;
+		}
+
+		if ((Time.time - startTime) > 40f)
+		{
+			speed = 4.9f;
+		}
+
+		if ((Time.time - startTime) > 60f)
+		{
+			speed = 5.25f;
+		}
+
+		if ((Time.time - startTime) > 70f)
+		{
+			if(enemy.transform.position.x < 0f)
+			{
+				if (enemy.transform.position.x > -3.9f)
+				{
+					input.x = -1;
+				}
+				else if(enemy.transform.position.x < -4.1f)
+				{
+					input.x = 1;
+				}
+				else
+				{
+					GetComponent<BoxCollider2D>().isTrigger = false;
+					speed = 0f;
+					jump = false;
+				}
+			}
+			else if(enemy.transform.position.x > 0f)
+			{
+				if (enemy.transform.position.x > 4.1f)
+				{
+					input.x = -1;
+				}
+				else if(enemy.transform.position.x < 3.9f)
+				{
+					input.x = 1;
+				}
+				else
+				{
+					GetComponent<BoxCollider2D>().isTrigger = false;
+					speed = 0f;
+					jump = false;
+				}
+			}
+		}
 
 		// If the player is to the right of the enemy, it will go right and vice versa.
-		if(player.transform.position.x > enemy.transform.position.x)
+		if(player.transform.position.x < enemy.transform.position.x)
 		{
-			GetComponent<Rigidbody2D>().velocity = new Vector2(moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
-			
-			// Commented out code.  May use later?
-			//GetComponent<Rigidbody2D>().AddForce(new Vector2(((moveSpeed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), GetComponent<Rigidbody2D>().velocity.y));
+			input.x = -1;						
+		}
+		else if(player.transform.position.x > enemy.transform.position.x)
+		{
+			input.x = 1;			
 		}
 		else
 		{
-			GetComponent<Rigidbody2D>().velocity = new Vector2(-moveSpeed, GetComponent<Rigidbody2D>().velocity.y);
-			
-			// Commented out code.  May use later?
-			//GetComponent<Rigidbody2D>().AddForce(new Vector2(((moveSpeed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), GetComponent<Rigidbody2D>().velocity.y));
+			input.x = 0;		
 		}
-		
+
 		// If the player is above the enemy, the enemy will jump.
-		if((player.transform.position.y > enemy.transform.position.y) && groundState.isGround())
+		if(Mathf.Abs(enemy.transform.position.x - player.transform.position.x) < 0.1f)
 		{
-			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpSpeed);
+			input.y = 0;
+			jump = false;
 		}
-		
-		// If the enemy is touching the wall, it will do wall jumps.
-		if(groundState.isWall())
+		else if(groundState.isGround() && (Time.time - startTime) < 72f)
 		{
-			GetComponent<Rigidbody2D>().velocity = new Vector2(((-groundState.wallDirection() * moveSpeed * 2f) - GetComponent<Rigidbody2D>().velocity.x) * airAccel, jumpSpeed * 0.8f);
-			
-			// Commented out code.  May use later?
-			//GetComponent<Rigidbody2D>().AddForce(new Vector2(((-groundState.wallDirection() * moveSpeed * 2f) - GetComponent<Rigidbody2D>().velocity.x) * airAccel, jumpSpeed));
+			input.y = 1;
+			jump = true;
 		}
 	
+				// If the player is above the enemy, the enemy will jump.
+		if(groundState.isWall())
+		{
+			input.y = 1;
+			jumpWall = true;
+		}
+
+		if(player.transform.position.y < enemy.transform.position.y && groundState.isWall())
+		{
+			input.y = 0;				
+			jumpWall = false;
+			airAccel = 1f;
+		}
+	
+		// Reverse player if going different direction.
+		transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (input.x == 0) ? transform.localEulerAngles.y : (input.x + 1) * 90, transform.localEulerAngles.z);
+				
+	
+	}
+	
+	void FixedUpdate()
+	{	
+		// Move player left or right.
+		GetComponent<Rigidbody2D>().AddForce(new Vector2(((input.x * speed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), 0));
+
+		// Stop the player when input.x is 0
+		GetComponent<Rigidbody2D>().velocity = new Vector2((input.x == 0 && groundState.isGround()) ? 0 : GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y);
+
+		// Normal jump. (full speed.)
+		if ( jump )
+		{
+			airAccel = 3000f;
+			input.y = 0;
+			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x, jumpSpeed);
+			jump = false;
+			jumpSpeed = 22f;
+		}
+
+		// Wall jump. (pushes the player away from the wall at 1.5 times normal speed.)
+		if ( jumpWall )
+		{
+			airAccel = 1f;
+			input.y = 0;
+			GetComponent<Rigidbody2D>().velocity = new Vector2(-groundState.wallDirection() * speed * 1.5f, GetComponent<Rigidbody2D>().velocity.y);
+			jumpWall = false;
+			jumpSpeed = 36f;
+		}
 	}
 }

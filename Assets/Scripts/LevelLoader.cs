@@ -10,9 +10,13 @@ public class LevelLoader : MonoBehaviour
 
 	public string levelToLoad;
 
+	protected string currentLevel;
+
 	// Use this for initialization
 	void Start()
 	{
+		currentLevel = Application.loadedLevelName;
+
 		playerInZone = false;
 	}
 	
@@ -22,8 +26,9 @@ public class LevelLoader : MonoBehaviour
 		// When the player is in the zone and
 		// press the up arrow key, the will
 		// be taken to a new level.
-		if(Input.GetKeyDown(KeyCode.UpArrow) && playerInZone)
+		if(Input.GetKeyDown(KeyCode.UpArrow) && playerInZone && !GetComponent<CircleCollider2D>().enabled)
 		{
+			UnlockLevels();
 			Destroy(GameObject.FindGameObjectWithTag("Music"));
 			Application.LoadLevel(levelToLoad);
 		}
@@ -45,5 +50,15 @@ public class LevelLoader : MonoBehaviour
 		}
 	}
 
-
+	protected void UnlockLevels()
+	{
+		for(int i=1; i<MainMenu.levels; i++)
+		{
+			if(currentLevel == "Level " + i.ToString())
+			{
+				PlayerPrefs.SetInt ("Level " + (i + 1).ToString(),1);
+			}
+		}
+	}
+				
 }

@@ -15,16 +15,9 @@ public class LevelManager : MonoBehaviour
 
 	public float respawnDelay;		// The amount of time it takes to respawn.
 
-	// Use this for initialization
 	void Start()
 	{
 		player = FindObjectOfType<Controller>();
-	}
-	
-	// Update is called once per frame
-	void Update()
-	{
-	
 	}
 		
 	public void RespawnPlayer()

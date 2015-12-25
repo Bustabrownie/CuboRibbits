@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 // A script written by gamesplusjames.
@@ -15,6 +16,9 @@ public class PauseMenu : MonoBehaviour
 	public GameObject pauseMenuCanvas;
 
 	public Controller player;
+
+	public Slider slider;
+
 
 	// Update is called once per frame
 	void Update()
@@ -58,5 +62,15 @@ public class PauseMenu : MonoBehaviour
 	{
 		Destroy(GameObject.FindGameObjectWithTag("Music"));
 		Application.LoadLevel(mainMenu);
+	}
+
+	public void VolumeControl(float volumeControl)
+	{
+		AudioListener.volume = volumeControl;			
+	}
+
+	void Start()
+	{
+		slider.value = AudioListener.volume;
 	}
 }

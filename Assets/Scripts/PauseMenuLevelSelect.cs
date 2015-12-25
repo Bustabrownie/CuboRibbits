@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 // A script written by gamesplusjames.
@@ -15,6 +16,8 @@ public class PauseMenuLevelSelect : MonoBehaviour
 	public GameObject pauseMenuCanvas;
 
 	public Controller player;
+
+	public Slider slider;
 
 	void  UpArrowWhilePaused()
 	{
@@ -77,5 +80,15 @@ public class PauseMenuLevelSelect : MonoBehaviour
 	{
 		Destroy(GameObject.FindGameObjectWithTag("Music"));
 		Application.LoadLevel(mainMenu);
+	}
+
+	public void VolumeControl(float volumeControl)
+	{
+		AudioListener.volume = volumeControl;			
+	}
+
+	void Start()
+	{
+		slider.value = AudioListener.volume;
 	}
 }
