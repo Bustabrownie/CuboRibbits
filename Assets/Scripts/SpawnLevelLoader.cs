@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class SpawnLevelLoader : MonoBehaviour {
-
+// This script spawns the door at the end of the level.
+public class SpawnLevelLoader : MonoBehaviour
+{
 	private float startTime;
 
 	// Use this for initialization
@@ -14,7 +15,7 @@ public class SpawnLevelLoader : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-		if ((Time.time - startTime) > 70f)
+		if ((Time.time - startTime) > 72f)
 		{
 			GetComponent<BoxCollider2D>().enabled = true;
 			GetComponentInChildren<SpriteRenderer>().enabled = true;

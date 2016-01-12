@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class UnlockLevel : MonoBehaviour {
-
+// This script makes it possible to unlock levels.
+public class UnlockLevel : MonoBehaviour
+{
 	// Use this for initialization
 	void Start ()
 	{
@@ -14,11 +15,5 @@ public class UnlockLevel : MonoBehaviour {
 				GameObject.Find("LockedLevel" + (i + 1)).active = false;
 			}
 		}
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
 	}
 }

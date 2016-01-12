@@ -5,6 +5,7 @@ using System.Collections;
 // A script written by gamesplusjames.
 // This script handles where the pause menu
 // buttons will lead to.
+// This script is a bit more specific towarsd the level select.
 public class PauseMenuLevelSelect : MonoBehaviour
 {
 	public string levelSelect;
@@ -59,7 +60,7 @@ public class PauseMenuLevelSelect : MonoBehaviour
 			UpArrowWhileUnPaused();
 		}
 
-		if(Input.GetKeyDown(KeyCode.Escape))
+		if(Input.GetButtonDown("Fire3"))
 		{
 			isPaused = !isPaused;
 		}

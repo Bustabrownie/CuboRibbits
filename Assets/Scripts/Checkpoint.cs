@@ -5,7 +5,6 @@ using System.Collections;
 // This script handles the "checkpoints."
 public class Checkpoint : MonoBehaviour
 {
-
 	public LevelManager levelManager;
 	
 	void Start()

@@ -6,7 +6,6 @@ using System.Collections;
 // This script makes sure that the aspect ratio is ALWAYS 16:9.
 public class AspectUtility : MonoBehaviour
 {
-	
 	public float _wantedAspectRatio = 1.777778f;
 	public bool landscapeModeOnly = true;
 	static public bool _landscapeModeOnly = true;

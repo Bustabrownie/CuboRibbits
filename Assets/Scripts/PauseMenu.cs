@@ -19,7 +19,6 @@ public class PauseMenu : MonoBehaviour
 
 	public Slider slider;
 
-
 	// Update is called once per frame
 	void Update()
 	{
@@ -41,7 +40,7 @@ public class PauseMenu : MonoBehaviour
 			GameObject.FindGameObjectWithTag("LevelLoader").GetComponent<LevelLoader>().enabled = true;
 		}
 
-		if(Input.GetKeyDown(KeyCode.Escape))
+		if(Input.GetButtonDown("Fire3"))
 		{
 			isPaused = !isPaused;
 		}

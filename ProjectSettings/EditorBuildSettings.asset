@@ -12,19 +12,35 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Levels/Intro Cutscene.unity
   - enabled: 1
-    path: Assets/Levels/Level Select.unity
-  - enabled: 1
     path: Assets/Levels/Credits.unity
+  - enabled: 1
+    path: Assets/Levels/Level Select.unity
   - enabled: 1
     path: Assets/Levels/Level 1 Cutscene.unity
   - enabled: 1
+    path: Assets/Levels/Level 1 VS Screen.unity
+  - enabled: 1
     path: Assets/Levels/Level 1.unity
+  - enabled: 1
+    path: Assets/Levels/Level 2 Cutscene.unity
+  - enabled: 1
+    path: Assets/Levels/Level 2 VS Screen.unity
   - enabled: 1
     path: Assets/Levels/Level 2.unity
   - enabled: 1
+    path: Assets/Levels/Level 3 Cutscene.unity
+  - enabled: 1
+    path: Assets/Levels/Level 3 VS Screen.unity
+  - enabled: 1
     path: Assets/Levels/Level 3.unity
   - enabled: 1
+    path: Assets/Levels/Level 4 Cutscene.unity
+  - enabled: 1
+    path: Assets/Levels/Level 4 VS Screen.unity
+  - enabled: 1
     path: Assets/Levels/Level 4.unity
+  - enabled: 1
+    path: Assets/Levels/Outro Cutscene.unity
   - enabled: 0
     path: Assets/Levels/Level 33.unity
   - enabled: 0

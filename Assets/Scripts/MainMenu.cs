@@ -5,8 +5,8 @@ using System.Collections;
 // A script written by gamesplusjames.
 // This script handles where the main menu
 // buttons will lead to.
-public class MainMenu : MonoBehaviour {
-		
+public class MainMenu : MonoBehaviour
+{
 	public string startLevel;
 
 	public string levelSelect;

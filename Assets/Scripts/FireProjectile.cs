@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// This script is used by the third boss.
+// It handles firing projectiles in a
+// semi-straight semi-homing trajectory.
 public class FireProjectile : MonoBehaviour
 {
 	public GameObject projectile;
@@ -28,6 +31,7 @@ public class FireProjectile : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
+		// Over time, the fire rate increases.
 		if ((Time.time - startTime) > 20f)
 		{
 			fireDelay = 2f;

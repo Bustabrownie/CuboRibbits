@@ -6,7 +6,6 @@ using System.Collections;
 // a level, and it does not duplicate.
 public class LoopMusic : MonoBehaviour
 {
-
 	private static LoopMusic instance = null;
 	public static LoopMusic Instance
 	{
@@ -26,5 +25,4 @@ public class LoopMusic : MonoBehaviour
 		}
 		DontDestroyOnLoad(this.gameObject);
 	}
-
 }

@@ -5,7 +5,6 @@ using System.Collections;
 // This script handles the switching levels.
 public class LevelLoader : MonoBehaviour
 {
-
 	private bool playerInZone;
 
 	public string levelToLoad;
@@ -26,7 +25,7 @@ public class LevelLoader : MonoBehaviour
 		// When the player is in the zone and
 		// press the up arrow key, the will
 		// be taken to a new level.
-		if(Input.GetKeyDown(KeyCode.UpArrow) && playerInZone && !GetComponent<CircleCollider2D>().enabled)
+		if((Input.GetAxisRaw("Vertical") > 0.8 || Input.GetButtonDown("Jump") || Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Submit")) && playerInZone && !GetComponent<CircleCollider2D>().enabled)
 		{
 			UnlockLevels();
 			Destroy(GameObject.FindGameObjectWithTag("Music"));

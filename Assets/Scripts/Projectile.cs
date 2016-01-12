@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+// This script is the banana.  It is a projectile.
 public class Projectile : MonoBehaviour
 {
 	public Controller player;
@@ -35,11 +36,11 @@ public class Projectile : MonoBehaviour
 	{
 		Vector3 angle = (target.position - transform.position).normalized;
 
-		myRigidBody2D.AddForce(angle * speed);
-
-				//transform.position = Vector3.MoveTowards(transform.position, target.position, speed);
-
+		if (Time.timeScale != 0)
+		{
+			myRigidBody2D.AddForce(angle * speed);
 			myRigidBody2D.angularVelocity = rotationSpeed;
+		}
 	}
 
 	void OnTriggerEnter2D(Collider2D other)

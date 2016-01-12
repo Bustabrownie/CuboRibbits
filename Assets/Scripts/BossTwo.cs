@@ -3,9 +3,9 @@ using System.Collections;
 
 // A script written by me.
 // I took aspects from Nyero's ground/wall functions.
-// This script acts as the basic AI for the first boss.
-public class BossTwo : MonoBehaviour {
-
+// This script acts as the basic AI for the second boss.
+public class BossTwo : MonoBehaviour
+{
 	public GameObject enemy;
 	public GameObject player;
 
@@ -91,9 +91,9 @@ public class BossTwo : MonoBehaviour {
 		}
 	}
 
-	public float    speed = 8f;			// Running speed.
+	public float    speed = 8f;				// Running speed.
 	public float    accel = 3000f;			// Acceleration on the ground.
-	public float airAccel = 200f;				// How fast can you turn around in air.
+	public float airAccel = 200f;			// How fast can you turn around in air.
 	public float jumpSpeed = 17f;			// Velocity for the highest jump.
 
 	private GroundState groundState;
@@ -103,6 +103,15 @@ public class BossTwo : MonoBehaviour {
 
 	private float startTime;
 
+	public AudioClip jumpSound;				// Makes the jump sound!
+	private AudioSource jumpAudio;			// Makes the above possible.
+
+	void Awake()
+	{
+		// Initializes the audio.
+		jumpAudio = GetComponent<AudioSource>();
+	}
+
 	void Start()
 	{
 		startTime = Time.time;
@@ -111,21 +120,23 @@ public class BossTwo : MonoBehaviour {
 
 	void Update()
 	{
+		// Speed increases at 20, 40, and 60 seconds.
 		if ((Time.time - startTime) > 20f)
 		{
-			speed = 9.75f;
+			speed = 9.33f;
 		}
 
 		if ((Time.time - startTime) > 40f)
 		{
-			speed = 11.5f;
+			speed = 10.66f;
 		}
 
 		if ((Time.time - startTime) > 60f)
 		{
-			speed = 13.25f;
+			speed = 12f;
 		}
 
+		// Boss stops moving at 70 seconds.
 		if ((Time.time - startTime) > 70f)
 		{
 			if(enemy.transform.position.x < 0f)
@@ -164,8 +175,8 @@ public class BossTwo : MonoBehaviour {
 			}
 		}
 
-
-		// If the player is to the right of the enemy, it will go right and vice versa.
+		// If the player is to the right of the boss, it will go right and vice versa.
+		// If the player is on a different level than the boss, the boss will go towards the closest wall.
 		if(player.transform.position.x < enemy.transform.position.x && Mathf.Abs(player.transform.position.y - enemy.transform.position.y) < 2.25f)
 		{
 			input.x = -1;						
@@ -183,51 +194,53 @@ public class BossTwo : MonoBehaviour {
 			input.x = 1;
 		}
 
+		// If the boss is above the player, they will fall.
+		// If the boss is touching the wall, they will wall jump.
+		// If the boss is close to a wall, they will jump towards it.
 		if(enemy.transform.position.y > player.transform.position.y)
 		{
 			input.y = 0;
 			jump = false;
 			jumpWall = false;
 		}
-		else if(groundState.isWall() && (Time.time - startTime) < 70f)
+		else if(groundState.isWall() && (Time.time - startTime) < 71f)
 		{
 			input.y = 1;
 			jump = true;
 			jumpWall = true;
 		}
-		else if((((13f - enemy.transform.position.x) < 3.5f) || ((enemy.transform.position.x + 13f) < 3.5f)) && groundState.isGround())
+		else if((((13f - enemy.transform.position.x) < 3.5f) || ((enemy.transform.position.x + 13f) < 3.5f)) && groundState.isGround() && (Time.time - startTime) < 71f)
 		{
 			input.y = 1;
 			jump = true;
 		}
 
-		// Reverse player if going different direction.
+		// Reverse boss if going different direction.
 		transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (input.x == 0) ? transform.localEulerAngles.y : (input.x + 1) * 90, transform.localEulerAngles.z);
 	}
 
 	void FixedUpdate()
 	{	
-		// Move player left or right.
+		// Move boss left or right.
 		GetComponent<Rigidbody2D>().AddForce(new Vector2(((input.x * speed) - GetComponent<Rigidbody2D>().velocity.x) * (groundState.isGround() ? accel : airAccel), 0));
 
-		// Stop the player when input.x is 0
+		// Stop the boss when input.x is 0
 		GetComponent<Rigidbody2D>().velocity = new Vector2((input.x == 0 && groundState.isGround()) ? 0 : GetComponent<Rigidbody2D>().velocity.x, GetComponent<Rigidbody2D>().velocity.y);
 
 		// Normal jump. (full speed.)
 		if ( jump )
 		{
+			jumpAudio.PlayOneShot(jumpSound);
 			airAccel = 200f;
-			//jumpSpeed = 22f;
 			input.y = 0;
 			GetComponent<Rigidbody2D>().velocity = new Vector2(GetComponent<Rigidbody2D>().velocity.x * 1.5f, jumpSpeed);
 			jump = false;
 		}
 
-		// Wall jump. (pushes the player away from the wall at 1.5 times normal speed.)
+		// Wall jump.
 		if ( jumpWall )
 		{
 			airAccel = 1000f;
-			//jumpSpeed = 1f;
 			input.y = 0;
 			GetComponent<Rigidbody2D>().velocity = new Vector2(-groundState.wallDirection() * speed * 2f, GetComponent<Rigidbody2D>().velocity.y);
 			jumpWall = false;

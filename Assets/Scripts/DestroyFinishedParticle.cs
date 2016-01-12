@@ -6,7 +6,6 @@ using System.Collections;
 // doing their thing, they get deleted.
 public class DestroyFinishedParticle : MonoBehaviour
 {
-
 	private ParticleSystem thisParticleSystem;
 
 	// Use this for initialization

@@ -16,10 +16,11 @@ TagManager:
   - Music
   - LevelLoader
   - Slider
-  - LockedLevel2
-  - LockedLevel3
-  - LockedLevel4
   - LockedLevel
+  - Laser Pointer
+  - Lava
+  - Rock
+  - Credits
   layers:
   - Default
   - TransparentFX
@@ -34,7 +35,7 @@ TagManager:
   - Enemies
   - Pickups
   - Ground
-  - 
+  - Rocks
   - 
   - 
   - 
@@ -63,6 +64,9 @@ TagManager:
   - name: Background
     uniqueID: 1535931219
     locked: 0
+  - name: ForeBackground
+    uniqueID: 3678460217
+    locked: 0
   - name: Platforms
     uniqueID: 406550961
     locked: 0
@@ -77,4 +81,7 @@ TagManager:
     locked: 0
   - name: UI
     uniqueID: 149272721
+    locked: 0
+  - name: Rocks
+    uniqueID: 1758527823
     locked: 0

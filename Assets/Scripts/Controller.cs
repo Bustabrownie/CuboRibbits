@@ -110,6 +110,7 @@ public class Controller : MonoBehaviour
 	bool jumpCancel = false;				// Jump is released.
 
 	private Vector2 input;					// Variable to help tell if button was pressed.
+	private Vector2 input2;
 	private GroundState groundState;		// Tell if the player is on the ground or wall.
 
 	public float jumpLeeway = 0.15f;		// The amount of time a player can still jump after falling.
@@ -117,7 +118,7 @@ public class Controller : MonoBehaviour
 
 	public AudioClip jumpSound;				// Makes the jump sound!
 	private AudioSource jumpAudio;			// Makes the above possible.
-	
+
 	void Awake()
 	{
 		// Initializes the audio.
@@ -132,23 +133,24 @@ public class Controller : MonoBehaviour
 
 	void Update()
 	{
-
 		// Assigns input if player is going left or right.
-		if( Input.GetKey(KeyCode.LeftArrow) )
+		if( Input.GetAxisRaw("Horizontal") < 0 )
 		{
-			input.x = -1;
+			input2.x = -1;
 		}
-		else if( Input.GetKey(KeyCode.RightArrow) )
+		else if( Input.GetAxisRaw("Horizontal") > 0 )
 		{
-			input.x = 1;
+			input2.x = 1;
 		}
 		else
 		{
-			input.x = 0;
+			input2.x = 0;
 		}
 
+		input.x = Input.GetAxisRaw("Horizontal");
+
 		// Jump is set to true when player presses jump key.
-		if ( Input.GetKeyDown(KeyCode.Space) && groundState.isTouching() )
+		if ( groundState.isTouching() && (Input.GetButtonDown("Jump")  || Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire2") || Input.GetButtonDown("Submit")))
 		{
 			jumpAudio.PlayOneShot(jumpSound);
 			input.y = 1;
@@ -157,15 +159,14 @@ public class Controller : MonoBehaviour
 		}
 
 		// Jump Cancel is set to true when jump key is released.
-		if (Input.GetKeyUp(KeyCode.Space))
+		if (Input.GetButtonUp("Jump") || Input.GetButtonUp("Fire1") || Input.GetButtonUp("Fire2") || Input.GetButtonUp("Submit"))
 		{
 			input.y = 0;
 			jumpCancel = true;
 		}
 		
 		// Reverse player if going different direction.
-		transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (input.x == 0) ? transform.localEulerAngles.y : (input.x + 1) * 90, transform.localEulerAngles.z);
-	
+		transform.localEulerAngles = new Vector3(transform.localEulerAngles.x, (input2.x == 0) ? transform.localEulerAngles.y : (input2.x + 1) * 90, transform.localEulerAngles.z);
 	}
 
 	void FixedUpdate()
